@@ -1,0 +1,57 @@
+<mat-tab-group>
+  <mat-tab label="Pacients">
+    <div class="page-title">
+      <h1>
+        Pacients Data
+      </h1>
+    </div>
+
+    <div *ngIf="!pacientsLoaded">
+        <img class="loading" src="../assets/spinner.gif">
+    </div>
+    <div *ngIf="pacientsLoaded">
+      <div class="search">
+        <input label="By Name" [(ngModel)]="searchedName"/>
+        <button (click)="search()">Search</button>
+      </div>
+      <div class="pacient" *ngFor="let pacient of pacientsData; let i = index">
+          <div class="pacient-name" (click)="getPatientData(pacient.resource.id, i)">
+            {{ pacient.resource.id }}
+          </div>
+          <table class="data-pacients-table" [ngClass]="{'visible': pacient.display_info}">
+              <tr>
+                <th>Encounter</th>
+                <th>CarePlan</th>
+                <th>Appointment</th>
+              </tr>
+              <tr>
+                <td>{{ pacient.resource.encounter }}</td>
+                <td>{{ pacient.resource.carePlan }}</td>
+                <td>{{ pacient.resource.appointment }}</td>
+              </tr>
+            </table>
+      </div>
+    </div>
+
+  </mat-tab>
+  <mat-tab label="Medication">
+    <div class="page-title">
+      <h1>
+        Medication Data
+      </h1>
+    </div>
+
+    <div *ngIf="!medicationsLoaded">
+        <img class="loading" src="../assets/spinner.gif">
+    </div>
+    <div *ngIf="medicationsLoaded">
+      <div class="medication" *ngFor="let medication of medicationData;">
+          <div class="medication-name" *ngIf="medication.resource.code && medication.resource.code.coding[0].display">
+            {{ medication.resource.code.coding[0].display }}
+          </div>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>
+
+<router-outlet></router-outlet>
